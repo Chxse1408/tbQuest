@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace tbQuest.Models
 {
-    public class Character
+    public class Character : ObservableObject
     {
         #region ENUMERABLES
 
@@ -45,7 +45,11 @@ namespace tbQuest.Models
         public int LocationId
         {
             get { return _locationId; }
-            set { _locationId = value; }
+            set
+            {
+                _locationId = value;
+                OnPropertyChanged(nameof(LocationId));
+            }
         }
 
         public int Age

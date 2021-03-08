@@ -12,8 +12,12 @@ namespace tbQuest.Business
     public class GameBusiness
     {
         private GameSessionViewModel _gameSessionViewModel;
-        private bool _newPlayer = true; // player data coming from GameData class
+
+        //private bool _newPlayer = true; // player data coming from GameData class
         private Player _player = new Player();
+
+        private Map _gameMap;
+        private Location _currentLocation;
 
         //private PlayerSetupView _playerSetupView = null;
         private List<string> _messages;
@@ -54,6 +58,8 @@ namespace tbQuest.Business
         {
             _player = GameData.PlayerData();
             _messages = GameData.InitialMessages();
+            _gameMap = GameData.GameMap();
+            _currentLocation = GameData.GameMap()._currentLocation;
         }
 
         /// <summary>
@@ -64,7 +70,7 @@ namespace tbQuest.Business
             //
             // instantiate the view model and initialize the data set
             //
-            _gameSessionViewModel = new GameSessionViewModel(_player, _messages);
+            _gameSessionViewModel = new GameSessionViewModel(_player, _messages, _gameMap, _currentLocation);
             GameSessionView gameSessionView = new GameSessionView(_gameSessionViewModel);
 
             gameSessionView.DataContext = _gameSessionViewModel;

@@ -34,5 +34,15 @@ namespace tbQuest.Presentation
         {
             this.Title = "ChaseKelly Productions";
         }
+
+        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameSessionViewModel.MoveForward();
+        }
+
+        private void BackwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameSessionViewModel.MoveBackward();
+        }
     }
 }

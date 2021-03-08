@@ -109,12 +109,45 @@
                     Margin="0,0,0,10"
                        Background="#4C4442"
                     Style="{StaticResource BorderStyle}">
-                    <Label
-                        Content="Map Desc."
-                        VerticalAlignment="Center"
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Width="175"
+                        Height="350">
+                        <Label
+                        Content="{Binding CurrentLocation.Name}"
+                        VerticalAlignment="Top"
                         HorizontalAlignment="Center"
                         Style="{StaticResource MainPanelLabelStyle}" />
+                        <Label
+                            Margin="0,40,0,0"
+                            Content="{Binding CurrentLocation.Description}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Background="white"
+                            Width="170"
+                            Height="150"
+                            Style="{StaticResource ResourceKey=MainPanelLabelStyle}" />
+                        <Button
+                            Height="40"
+                            Width="80"
+                            VerticalAlignment="Bottom"
+                            Margin="0,30,0,0"
+                            Click="ForwardButton_Click">
+                            <Label
+                                Content="Forwards" />
+                        </Button>
+                        <Button
+                            Height="40"
+                            Width="80"
+                            VerticalAlignment="Bottom"
+                            Margin="0,10,0,0"
+                            Click="BackwardButton_Click">
+                            <Label
+                                Content="Backwards" />
+                        </Button>
+                    </StackPanel>
                 </Border>
+
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
@@ -128,7 +161,7 @@
                             VerticalAlignment="Center"
                             Margin="0">
                             <Label
-                                Content="Game Log"
+                                Content="{Binding MessageDisplay}"
                                 HorizontalAlignment="Center"
                                 Style="{StaticResource MainPanelLabelStyle}" />
                         </StackPanel>
@@ -169,8 +202,8 @@
                             <StackPanel
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Left">
-                                <TextBox Text="{Binding Player.PlayedBefore}" Style="{StaticResource MainPanelTextBoxStyle}" />
-                                <Label Content="PlayedBefore" Style="{StaticResource MainPanelLabelStyle}" />
+                                <TextBox Text="{Binding Player.PlayedBFor}" Style="{StaticResource MainPanelTextBoxStyle}" />
+                                <Label Content="Played Before" Style="{StaticResource MainPanelLabelStyle}" />
                             </StackPanel>
                             <StackPanel
                                 Orientation="Horizontal"
@@ -197,7 +230,7 @@
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right">
                                 <Label Content="Current Time" Style="{StaticResource MainPanelLabelStyle}" />
-                                <TextBox Text="{Binding Player.Time}" Style="{StaticResource MainPanelTextBoxStyle}" />
+                                <TextBox IsReadOnlyCaretVisible="True" IsReadOnly="True" Text="" Style="{StaticResource MainPanelTextBoxStyle}" />
                             </StackPanel>
                             <StackPanel
                                 Orientation="Horizontal"
