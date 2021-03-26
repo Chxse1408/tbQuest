@@ -59,8 +59,8 @@ namespace tbQuest.Data
                 {
                     Id = 1,
                     Name = "Lobby",
-                    Description = "straight ahead you see an elevator with a keypad beside it, to your left there is a couch and to your right there is an unconsious man sitting against the wall",
-                    Accessible = false,
+                    Description = " straight ahead you see\n an elevator with a\n keypad beside it,\n to your left there\n is a couch and to\n your right there is\n an unconsious man\n sitting against the\n wall",
+                    Accessible = true,
                     RequiredItemID = 2,
                     GameItems = new ObservableCollection<GameItem>
                     {
@@ -82,7 +82,7 @@ namespace tbQuest.Data
         {
             return new List<GameItem>()
             {
-                new DrawerKey(1, "Box Key","rusted key simple key, looks to be for an old lock box"),
+                new DrawerKey(1, "Lock Box Key","rusted key simple key, looks to be for an old lock box"),
                 new DoorKey(2,"Master Lock Key","Shiny Key reading 'Master Lock' maybe it's for the door?"),
                 new Knife(3, "Envelope Knife", "Knife for opening an envelope")
             };
@@ -97,5 +97,13 @@ namespace tbQuest.Data
                 "\tWhat do you do?"
             };
         }
+
+        //public void UnlockDoor()
+        //{
+        //    if (PlayerData().Inventory.Contains(GameItemById(2)) == true)
+        //    {
+        //        gameMap.Locations[1].Accessible = true;
+        //    }
+        //}
     }
 }

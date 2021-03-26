@@ -38,7 +38,11 @@ namespace tbQuest.Presentation
         public bool LightsOn
         {
             get { return _lightsOn; }
-            set { _lightsOn = value; }
+            set
+            {
+                _lightsOn = value;
+                OnPropertyChanged(nameof(LightsOn));
+            }
         }
 
         public string Timer
@@ -59,13 +63,21 @@ namespace tbQuest.Presentation
         public Player Player
         {
             get { return _player; }
-            set { _player = value; }
+            set
+            {
+                _player = value;
+                OnPropertyChanged(nameof(Player));
+            }
         }
 
         public Map GameMap
         {
             get { return _gameMap; }
-            set { _gameMap = value; }
+            set
+            {
+                _gameMap = value;
+                OnPropertyChanged(nameof(GameMap));
+            }
         }
 
         public Location CurrentLocation
@@ -274,12 +286,29 @@ namespace tbQuest.Presentation
             {
                 CurrentGameItem = _currentLocation.GameItems[1];
                 AddItemToInventory();
+                _gameMap.OpenLocationsByKey(2);
             }
-            else if (userCommand.Contains("lights"))
+            else if (userCommand.Contains("forward") == true)
+            {
+                MoveNorth();
+            }
+            else if (userCommand.Contains("backward") == true)
+            {
+                MoveSouth();
+            }
+            else if (userCommand.Contains("lights") == true)
             {
                 LightsOn = true;
             }
         }
+
+        //public void UnlockDoor()
+        //{
+        //    if (Player.Inventory.Contains(CurrentLocation.GameItems[1]))
+        //    {
+        //        GameMap.OpenLocationsByKey(2);
+        //    }
+        //}
 
         #endregion METHODS
     }
