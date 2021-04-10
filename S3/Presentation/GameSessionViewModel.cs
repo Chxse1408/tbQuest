@@ -162,10 +162,8 @@ namespace tbQuest.Presentation
 
             for (int index = 0; index < _messages.Count; index++)
             {
-                lifoMessages.Add($"<T:{GameTime().ToString(@"mm\:ss\:ms")}>" + _messages[index]);
+                lifoMessages.Add(_messages[index]);
             }
-
-            lifoMessages.Reverse();
 
             return string.Join("\n\n", lifoMessages);
         }
@@ -227,6 +225,7 @@ namespace tbQuest.Presentation
                 _gameMap.MoveNorth();
                 CurrentLocation = _gameMap.CurrentLocation;
                 UpdateAvailableTravelPoints();
+                OnPropertyChanged(nameof(Player));
             }
         }
 
@@ -237,6 +236,7 @@ namespace tbQuest.Presentation
                 _gameMap.MoveSouth();
                 CurrentLocation = _gameMap.CurrentLocation;
                 UpdateAvailableTravelPoints();
+                OnPropertyChanged(nameof(Player));
             }
         }
 
@@ -282,12 +282,119 @@ namespace tbQuest.Presentation
 
         public void UserCommands(string userCommand)
         {
+            #region ITEM INTERACTION
+
             if (userCommand.Contains("plant") == true && userCommand.Contains("key") == true)
             {
-                CurrentGameItem = _currentLocation.GameItems[1];
-                AddItemToInventory();
-                _gameMap.OpenLocationsByKey(2);
+                if (CurrentLocation.Id == 0)
+                {
+                    _messages.Add(_gameMap.OpenLocationsByKey(0));
+                    CurrentGameItem = _currentLocation.GameItems[0];
+                    AddItemToInventory();
+                    UpdateAvailableTravelPoints();
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
             }
+            else if (userCommand.Contains("take") == true && userCommand.Contains("knife") == true)
+            {
+                if (CurrentLocation.Id == 0)
+                {
+                    _messages.Add(_gameMap.OpenLocationsByKey(1));
+                    if (Player.Inventory.Count == 1 || Player.Inventory.Count == 2)
+                    {
+                        CurrentGameItem = _currentLocation.GameItems[0];
+                    }
+                    else { CurrentGameItem = _currentLocation.GameItems[1]; }
+                    AddItemToInventory();
+                    UpdateAvailableTravelPoints();
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+            else if (userCommand.Contains("key") == true && userCommand.Contains("couch") == true)
+            {
+                if (CurrentLocation.Id == 1)
+                {
+                    _messages.Add(_gameMap.OpenLocationsByKey(0));
+                    CurrentGameItem = _currentLocation.GameItems[0];
+                    AddItemToInventory();
+                    UpdateAvailableTravelPoints();
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+            else if (userCommand.Contains("open") == true && userCommand.Contains("lockbox") == true)
+            {
+                if (CurrentLocation.Id == 0)
+                {
+                    if (GameMap.Locations[1].GameItems.Count == 0)
+                    {
+                        _messages.Add("Upon opening the lockbox you find a letter.");
+                        OnPropertyChanged(nameof(MessageDisplay));
+                    }
+                }
+            }
+            else if (userCommand.Contains("open") == true && userCommand.Contains("letter") == true)
+            {
+                if (CurrentLocation.Id == 0)
+                {
+                    if (Player.Inventory.Count == 3)
+                    {
+                        _messages.Add("You open the letter and it reads as follows:\n'Hey new bossman!\nI just wanted to welcome you to your new office space! I hope that you find it comfortable. If you need anything, you can call me at my extention 1408. Which also so happens to be the universal code to unlock everthing in the office.\ncheers!\nYour new secretary'");
+                        OnPropertyChanged(nameof(MessageDisplay));
+                    }
+                }
+            }
+            else if (userCommand.Contains("open") == true && userCommand.Contains("elavator") == true && userCommand.Contains("1408") == true)
+            {
+                if (CurrentLocation.Id == 1)
+                {
+                    _messages.Add("The elavator opens and you leave safe and sound.");
+                    _messages.Add("Your final time is: " + _gameTime.ToString(@"mm\:ss"));
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+
+            #endregion ITEM INTERACTION
+
+            #region checking
+
+            else if (userCommand.Contains("check") == true && userCommand.Contains("plant") == true)
+            {
+                if (CurrentLocation.Id == 0)
+                {
+                    _messages.Add("There seems to be a shiny key hidden in the plant.");
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+            else if (userCommand.Contains("check") == true && userCommand.Contains("desk") == true)
+            {
+                if (CurrentLocation.Id == 0)
+                {
+                    if (CurrentLocation.Id == 0)
+                    {
+                        _messages.Add("The desk has a few drawers and sitting upon the desk is a letter opener.");
+                        OnPropertyChanged(nameof(MessageDisplay));
+                    }
+                }
+            }
+            else if (userCommand.Contains("check") == true && userCommand.Contains("couch") == true)
+            {
+                if (CurrentLocation.Id == 1)
+                {
+                    _messages.Add("You check under the couch cushion and see an old rusted key.");
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+            else if (userCommand.Contains("check") == true && userCommand.Contains("drawers") == true)
+            {
+                if (CurrentLocation.Id == 0)
+                {
+                    _messages.Add("You check all of the drawers and the only one that was unlocked contained an old lock box.");
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+
+            #endregion checking
+
             else if (userCommand.Contains("forward") == true)
             {
                 MoveNorth();
@@ -300,15 +407,12 @@ namespace tbQuest.Presentation
             {
                 LightsOn = true;
             }
+            else
+            {
+                _messages.Add("Try another way of phrasing your command");
+                OnPropertyChanged(nameof(MessageDisplay));
+            }
         }
-
-        //public void UnlockDoor()
-        //{
-        //    if (Player.Inventory.Contains(CurrentLocation.GameItems[1]))
-        //    {
-        //        GameMap.OpenLocationsByKey(2);
-        //    }
-        //}
 
         #endregion METHODS
     }

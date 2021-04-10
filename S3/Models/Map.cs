@@ -105,12 +105,14 @@ namespace tbQuest.Models
 
         public string OpenLocationsByKey(int itemId)
         {
-            string message = "";
+            string message = "skrt skrt";
             Location mapLocation = new Location();
+            mapLocation = Locations[1];
             if (mapLocation.RequiredItemID == itemId)
             {
                 mapLocation.Accessible = true;
             }
+            message = CurrentLocation.GameItems[itemId].Description;
             return message;
         }
 

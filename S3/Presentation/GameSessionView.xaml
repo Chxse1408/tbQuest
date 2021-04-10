@@ -21,6 +21,10 @@
             <Setter Property="Foreground" Value="black" />
             <Setter Property="FontFamily" Value="Lucida Console" />
         </Style>
+        <Style x:Key="MainBox" TargetType="TextBox">
+            <Setter Property="Foreground" Value="black" />
+            <Setter Property="FontFamily" Value="Lucida Console" />
+        </Style>
         <Style x:Key="MainPanelButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="10,0,10,0" />
             <Setter Property="Width" Value="75" />
@@ -119,15 +123,17 @@
                         VerticalAlignment="Top"
                         HorizontalAlignment="Center"
                         Style="{StaticResource MainPanelLabelStyle}" />
-                        <Label
+                        <TextBox
                             Margin="0,40,0,0"
-                            Content="{Binding CurrentLocation.Description}"
+                            Text="{Binding CurrentLocation.Description, Mode=OneWay}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Background="white"
                             Width="170"
                             Height="150"
-                            Style="{StaticResource ResourceKey=MainPanelLabelStyle}"
+                            TextWrapping="Wrap"
+                            IsReadOnly="True"
+                            Style="{StaticResource ResourceKey=MainBox}"
                             Visibility="{Binding LightsOn, Converter={StaticResource BoolToVis}}" />
                     </StackPanel>
                 </Border>
@@ -144,10 +150,13 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Margin="0">
-                            <Label
-                                Content="{Binding MessageDisplay}"
+                            <TextBox
+                                IsReadOnly="True"
+                                TextWrapping="Wrap"
+                                BorderThickness="0"
+                                Text="{Binding MessageDisplay, Mode=OneWay}"
                                 HorizontalAlignment="Center"
-                                Style="{StaticResource MainPanelLabelStyle}" />
+                                Style="{StaticResource MainBox}"></TextBox>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -185,9 +194,9 @@
                     <Grid
                         Margin="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="208*" />
+                            <ColumnDefinition Width="415" />
+                            <ColumnDefinition Width="207*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel
                             Grid.Column="0"
