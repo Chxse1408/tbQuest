@@ -17,6 +17,7 @@ namespace tbQuest.Models
         private bool _accessible;
         private int _requiredItemId;
         private ObservableCollection<GameItem> _gameItems;
+        private ObservableCollection<Npc> _npcs;
 
         #endregion Fields
 
@@ -56,6 +57,12 @@ namespace tbQuest.Models
         {
             get { return _gameItems; }
             set { _gameItems = value; }
+        }
+
+        public ObservableCollection<Npc> Npcs
+        {
+            get { return _npcs; }
+            set { _npcs = value; }
         }
 
         #endregion Properties

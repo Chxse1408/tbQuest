@@ -26,6 +26,8 @@ namespace tbQuest.Models
         protected int _age;
         protected PlayedBefore _playedBefore;
 
+        protected Random random = new Random();
+
         #endregion FIELDS
 
         #region PROPERTIES

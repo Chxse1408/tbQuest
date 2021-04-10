@@ -30,6 +30,9 @@ namespace tbQuest.Presentation
         private Location _southLocation;
 
         private GameItem _currentGameItem;
+        private Npc _currentNpc;
+
+        private Random random = new Random();
 
         #endregion FIELDS
 
@@ -101,6 +104,9 @@ namespace tbQuest.Presentation
             }
         }
 
+        public bool HasNorthLocation { get { return NorthLocation != null; } }
+        public bool HasSouthLocation { get { return SouthLocation != null; } }
+
         public Location SouthLocation
         {
             get { return _southLocation; }
@@ -118,8 +124,15 @@ namespace tbQuest.Presentation
             set { _currentGameItem = value; }
         }
 
-        public bool HasNorthLocation { get { return NorthLocation != null; } }
-        public bool HasSouthLocation { get { return SouthLocation != null; } }
+        public Npc CurrentNpc
+        {
+            get { return _currentNpc; }
+            set
+            {
+                _currentNpc = value;
+                OnPropertyChanged(nameof(CurrentNpc));
+            }
+        }
 
         #endregion PROPERTIES
 
@@ -278,7 +291,19 @@ namespace tbQuest.Presentation
         {
         }
 
+        public void OnPlayerTalkTo()
+        {
+            if (CurrentNpc != null && CurrentNpc is ISpeak)
+            {
+                ISpeak speakingNpc = CurrentNpc as ISpeak;
+                string message = speakingNpc.Speak();
+                _messages.Add(message);
+            }
+        }
+
         #endregion ACTIONS
+
+        #region USER COMMANDS
 
         public void UserCommands(string userCommand)
         {
@@ -293,6 +318,10 @@ namespace tbQuest.Presentation
                     AddItemToInventory();
                     UpdateAvailableTravelPoints();
                     OnPropertyChanged(nameof(MessageDisplay));
+                }
+                else
+                {
+                    _messages.Add("That is not in this room.");
                 }
             }
             else if (userCommand.Contains("take") == true && userCommand.Contains("knife") == true)
@@ -309,6 +338,10 @@ namespace tbQuest.Presentation
                     UpdateAvailableTravelPoints();
                     OnPropertyChanged(nameof(MessageDisplay));
                 }
+                else
+                {
+                    _messages.Add("That is not in this room.");
+                }
             }
             else if (userCommand.Contains("key") == true && userCommand.Contains("couch") == true)
             {
@@ -320,6 +353,10 @@ namespace tbQuest.Presentation
                     UpdateAvailableTravelPoints();
                     OnPropertyChanged(nameof(MessageDisplay));
                 }
+                else
+                {
+                    _messages.Add("That is not in this room.");
+                }
             }
             else if (userCommand.Contains("open") == true && userCommand.Contains("lockbox") == true)
             {
@@ -330,6 +367,14 @@ namespace tbQuest.Presentation
                         _messages.Add("Upon opening the lockbox you find a letter.");
                         OnPropertyChanged(nameof(MessageDisplay));
                     }
+                    else
+                    {
+                        _messages.Add("It is locked.");
+                    }
+                }
+                else
+                {
+                    _messages.Add("That is not in this room.");
                 }
             }
             else if (userCommand.Contains("open") == true && userCommand.Contains("letter") == true)
@@ -341,6 +386,14 @@ namespace tbQuest.Presentation
                         _messages.Add("You open the letter and it reads as follows:\n'Hey new bossman!\nI just wanted to welcome you to your new office space! I hope that you find it comfortable. If you need anything, you can call me at my extention 1408. Which also so happens to be the universal code to unlock everthing in the office.\ncheers!\nYour new secretary'");
                         OnPropertyChanged(nameof(MessageDisplay));
                     }
+                    else
+                    {
+                        _messages.Add("The glue and paper are indestructable, must need a knife.");
+                    }
+                }
+                else
+                {
+                    _messages.Add("That is not in this room.");
                 }
             }
             else if (userCommand.Contains("open") == true && userCommand.Contains("elavator") == true && userCommand.Contains("1408") == true)
@@ -350,6 +403,10 @@ namespace tbQuest.Presentation
                     _messages.Add("The elavator opens and you leave safe and sound.");
                     _messages.Add("Your final time is: " + _gameTime.ToString(@"mm\:ss"));
                     OnPropertyChanged(nameof(MessageDisplay));
+                }
+                else
+                {
+                    _messages.Add("That is not in this room.");
                 }
             }
 
@@ -364,16 +421,21 @@ namespace tbQuest.Presentation
                     _messages.Add("There seems to be a shiny key hidden in the plant.");
                     OnPropertyChanged(nameof(MessageDisplay));
                 }
+                else
+                {
+                    _messages.Add("That is not in this room.");
+                }
             }
             else if (userCommand.Contains("check") == true && userCommand.Contains("desk") == true)
             {
                 if (CurrentLocation.Id == 0)
                 {
-                    if (CurrentLocation.Id == 0)
-                    {
-                        _messages.Add("The desk has a few drawers and sitting upon the desk is a letter opener.");
-                        OnPropertyChanged(nameof(MessageDisplay));
-                    }
+                    _messages.Add("The desk has a few drawers and sitting upon the desk is a knife for envelopes.");
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+                else
+                {
+                    _messages.Add("That is not in this room.");
                 }
             }
             else if (userCommand.Contains("check") == true && userCommand.Contains("couch") == true)
@@ -383,6 +445,10 @@ namespace tbQuest.Presentation
                     _messages.Add("You check under the couch cushion and see an old rusted key.");
                     OnPropertyChanged(nameof(MessageDisplay));
                 }
+                else
+                {
+                    _messages.Add("That is not in this room.");
+                }
             }
             else if (userCommand.Contains("check") == true && userCommand.Contains("drawers") == true)
             {
@@ -391,9 +457,38 @@ namespace tbQuest.Presentation
                     _messages.Add("You check all of the drawers and the only one that was unlocked contained an old lock box.");
                     OnPropertyChanged(nameof(MessageDisplay));
                 }
+                else
+                {
+                    _messages.Add("That is not in this room.");
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
+            }
+            else if (userCommand.Contains("unconsious") == true || userCommand.Contains("man") == true)
+            {
+                if (CurrentLocation.Id == 1)
+                {
+                    if ((23 == DateTime.Now.Hour) == true)
+                    {
+                        CurrentNpc = CurrentLocation.Npcs[0];
+                        OnPlayerTalkTo();
+                        OnPropertyChanged(nameof(MessageDisplay));
+                    }
+                    else
+                    {
+                        _messages.Add("The man is not responding.");
+                        OnPropertyChanged(nameof(MessageDisplay));
+                    }
+                }
+                else
+                {
+                    _messages.Add("He is not in this room.");
+                    OnPropertyChanged(nameof(MessageDisplay));
+                }
             }
 
             #endregion checking
+
+            #region MOVEMENT
 
             else if (userCommand.Contains("forward") == true)
             {
@@ -407,12 +502,35 @@ namespace tbQuest.Presentation
             {
                 LightsOn = true;
             }
+
+            #endregion MOVEMENT
+
+            else if (userCommand.Contains("quit") == true)
+            {
+                System.Windows.Application.Current.Shutdown();
+            }
+            else if (userCommand.Contains("help") == true)
+            {
+                _messages.Add("To see a description of an item in your inventory or in the room enter 'check' + your item name.\nTo attempt an escape, enter 'open elavator' + the elavator code.");
+                OnPropertyChanged(nameof(MessageDisplay));
+            }
             else
             {
                 _messages.Add("Try another way of phrasing your command");
                 OnPropertyChanged(nameof(MessageDisplay));
             }
         }
+
+        #endregion USER COMMANDS
+
+        #region HELPER METHODS
+
+        private int DieRoll(int sides)
+        {
+            return random.Next(1, sides + 1);
+        }
+
+        #endregion HELPER METHODS
 
         #endregion METHODS
     }
