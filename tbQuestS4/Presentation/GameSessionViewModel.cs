@@ -467,16 +467,25 @@ namespace tbQuest.Presentation
             {
                 if (CurrentLocation.Id == 1)
                 {
-                    if ((23 == DateTime.Now.Hour) == true)
+                    if (userCommand.Contains("check"))
                     {
                         CurrentNpc = CurrentLocation.Npcs[0];
-                        OnPlayerTalkTo();
+                        _messages.Add(CurrentNpc.Description);
                         OnPropertyChanged(nameof(MessageDisplay));
                     }
                     else
                     {
-                        _messages.Add("The man is not responding.");
-                        OnPropertyChanged(nameof(MessageDisplay));
+                        if ((23 == DateTime.Now.Hour) == true)
+                        {
+                            CurrentNpc = CurrentLocation.Npcs[0];
+                            OnPlayerTalkTo();
+                            OnPropertyChanged(nameof(MessageDisplay));
+                        }
+                        else
+                        {
+                            _messages.Add("The man is not responding.");
+                            OnPropertyChanged(nameof(MessageDisplay));
+                        }
                     }
                 }
                 else
