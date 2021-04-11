@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tbQuestS3", "S3\tbQuestS3.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tbQuestS4", "tbQuestS4\tbQuestS4.csproj", "{87E33C95-72FA-4719-A7AF-1E7C5FA0E8CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tbQuestS5", "tbQuestS5\tbQuestS5.csproj", "{B8217A34-2613-4B45-B8EF-87F3BE4B2D98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{87E33C95-72FA-4719-A7AF-1E7C5FA0E8CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87E33C95-72FA-4719-A7AF-1E7C5FA0E8CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87E33C95-72FA-4719-A7AF-1E7C5FA0E8CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8217A34-2613-4B45-B8EF-87F3BE4B2D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8217A34-2613-4B45-B8EF-87F3BE4B2D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8217A34-2613-4B45-B8EF-87F3BE4B2D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8217A34-2613-4B45-B8EF-87F3BE4B2D98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
